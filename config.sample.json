@@ -1,0 +1,187 @@
+{
+	"api": {
+		"server": {
+			"protocol": "http",
+			"host": "api.framework.dev",
+			"port": "1337"
+		},
+		"mail" : {
+			"service": "Gmail",
+			"auth": {
+				"user":"sample@openovate.com",
+				"pass":"samlepass"
+			}
+		},
+		"s3": {
+			"host": "https://s3-ap-southeast-1.amazonaws.com",
+			"token": "AKIAJQOL4OEM3WZW7BSA",
+			"secret": "gGtUXXnPAWqjcT15QbXWQpeMWl7FTkEhV75VCQ1M",
+			"bucket": "framework-dev"
+		},
+		"database": {
+			"host": "127.0.0.1",
+			"port": 3306,
+			"name": "framework",
+			"user": "root",
+			"pass": "" 
+		},
+		"roles": {
+			"Public": {
+				"public_profile": {
+					"title": "Profiles",
+					"description": "Get a profile detail from a buyer or seller"
+				},
+				"public_sso": {
+					"title": "Single Sign On",
+					"description": "Use our Single Sign On"
+				}
+			},
+			"Personal": {
+				"personal_profile": {
+					"title": "Profile",
+					"description": "Access user profile"
+				}
+			},
+			"User": {
+				"user_profile": {
+					"title": "Profile",
+					"description": "Access user profile",
+					"icon": "user"
+				}
+			},
+			"Global": {
+				"global_profile": {
+					"title": "Profile",
+					"description": "Access all profiles",
+					"icon": "user"
+				}
+			}
+		},
+		"routes": {
+			"developer": {
+				"/developer/create": {
+					"method": "ALL"
+				},
+				"/developer/update": {
+					"method": "ALL"
+				},
+				"/developer/login": {
+					"method": "ALL"
+				},	
+				"/developer/logout": {
+					"method": "GET"
+				},
+				"/app/list": {
+					"method": "GET"
+				},
+				"/app/create": {
+					"method": "ALL"
+				},
+				"/app/update/:id": {
+					"method": "ALL"
+				},
+				"/app/remove/:id": {
+					"method": "GET"
+				},
+				"/app/refresh/:id": {
+					"method": "GET"
+				}
+			},
+			"dialog": {
+				"/dialog/login": {
+					"method": "ALL",
+					"role": "public_sso"
+				},
+				"/dialog/request": {
+					"method": "ALL",
+					"role": "public_sso"
+				},
+				"/dialog/create": {
+					"method": "ALL",
+					"role": "public_sso"
+				},
+				"/dialog/update": {
+					"method": "ALL",
+					"role": "public_sso"
+				},
+				"/dialog/permissions": {
+					"method": "ALL",
+					"role": "public_sso"
+				},
+				"/dialog/logout": {
+					"method": "GET",
+					"role": "public_sso"
+				},
+				"/dialog/create": {
+					"method": "ALL",
+					"role": "public_sso"
+				}
+			},
+			"rest": {
+				"/rest/profile/list": {
+					"method": "GET",
+					"role": "public_profile"
+				},
+				"/rest/profile/detail/:id": {
+					"method": "GET",
+					"role": "public_profile"
+				},
+				"/rest/access": {
+					"method": "POST",
+					"role": "public_sso"
+				},
+				"/rest/user/profile/detail": {
+					"method": "GET",
+					"role": "user_profile"
+				},
+				"/rest/user/profile/update": {
+					"method": "PUT",
+					"role": "user_profile"
+				},
+				"/rest/profile/detail": {
+					"method": "GET",
+					"role": "personal_profile"
+				},
+				"/rest/profile/update": {
+					"method": "PUT",
+					"role": "personal_profile"
+				}
+			}
+		},
+		"events": [],
+		"jobs": [
+			"mail-send",
+			"profile-update",
+			"sms-send"
+		]
+	},
+	"test": {
+		"app_token": "986e7ce6bec660838491c1cd0a1f4ef6",
+		"app_secret": "ba0d2fc7aab09dfa3463943c0aaa8551",
+		"scope": [
+			"public_profile",
+			"public_sso",
+			"personal_profile",
+			"user_profile"
+		],
+		"database": {
+			"host": "127.0.0.1",
+			"port": 3306,
+			"name": "testing_db",
+			"user": "root",
+			"pass": "" 
+		}
+	},
+	"web": {
+		"server": "http://api.salaaap.com:1337",
+		"app_token": "986e7ce6bec660838491c1cd0a1f4ef6",
+		"app_secret": "ba0d2fc7aab09dfa3463943c0aaa8551",
+		"ga_tracker": "UA-66654644-1",
+		"scope": [
+			"public_profile",
+			"public_sso",
+			"personal_profile",
+			"user_profile"
+		]
+	}
+}

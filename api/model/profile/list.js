@@ -1,0 +1,112 @@
+/* Required
+-------------------------------*/
+/* Definition
+-------------------------------*/
+module.exports = {
+	/* Constants
+	-------------------------------*/
+	INVALID_PARAMETERS	: 'Invalid Parameters',
+	
+	/* Properties
+	-------------------------------*/
+	controller	: require('../../controller'),
+	database	: require('../../controller').database,
+	
+	/* Methods
+	-------------------------------*/
+	/**
+	 * Returns errors if any
+	 *
+	 * @param object submitted item object
+	 * @return object error object
+	 */
+	errors: function(item, errors) {
+		return errors || {};
+	},
+	
+	/**
+	 * Processes the form
+	 *
+	 * @param object profile object
+	 * @param function callback whenever it's done
+	 * @return void
+	 */
+	process: function(item, callback) {
+		item 		= item 		|| {};
+		callback 	= callback 	|| function() {};
+		
+		//prevent uncatchable error
+		if(Object.keys(this.errors(item)).length) {
+			return callback(this.INVALID_PARAMETERS);
+		}
+		
+		//prepare
+		item = this.controller.validate().prepare(item || {});
+	
+		var filter 	= item.filter 	|| {},
+			range 	= item.range 	|| 50,
+			start 	= item.start 	|| 0,
+			order 	= item.order 	|| {},
+			count	= item.count 	|| 0,
+			keyword	= item.keyword 	|| null;
+			
+		var search = this.database
+			.search('profile')
+			.innerJoinOn(
+				'profile_file', 
+				'profile_file_profile = profile_id')
+			.innerJoinOn(
+				'file', 
+				'profile_file_file = file_id AND file_type = \'main_profile\'')
+			.setStart(parseInt(start) || 0)
+			.setRange(parseInt(range) || 0);
+			
+		if(item.public) {
+			search.setColumns(
+				'profile_id', 
+				'profile_name',
+				'profile_type',
+				'profile_created',
+				'file_link AS profile_image')
+		}
+		
+		if(typeof filter.profile_active === 'undefined') {
+			filter.profile_active = 1;
+		}
+		
+		//add filters
+		for(var column in filter) {
+			if(filter.hasOwnProperty(column)) {
+				if(/^[a-zA-Z0-9-_]+$/.test(column)) {
+					search.addFilter(column + ' = ?', filter[column]);
+				}
+			}
+		}
+		
+		//keyword?
+		if(keyword) {
+			search.addFilter('(' + [
+				'profile_name LIKE ?',
+				'profile_email LIKE ?',
+				'profile_company LIKE ?',
+				'profile_phone LIKE ?'
+			].join(' OR ') + ')', 
+				'%'+keyword+'%', 
+				'%'+keyword+'%', 
+				'%'+keyword+'%', 
+				'%'+keyword+'%');
+		}
+		
+		//add sorting
+		for(column in order) {
+			if(order.hasOwnProperty(column)) {
+				search.addSort(column, order[column]);
+			}
+		}
+		
+		callback(null, search);
+		this.database.trigger('profile-list', search);
+		
+		return search;
+	}
+};

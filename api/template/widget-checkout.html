@@ -1,0 +1,175 @@
+(function() {
+	var getProductsByGraph = function() {
+		var id 			= document.head.querySelector('[property="product:retailer_item_id"]');
+		var title 		= document.head.querySelector('[property="og:title"]');
+		var image 		= document.head.querySelector('[property="og:image"]');
+		var price 		= document.head.querySelector('[property="product:price:amount"]');
+		var currency 	= document.head.querySelector('[property="product:price:currency"]');
+		
+		
+		if(!id || !title || !image || !price) {
+			return false;
+		}
+		
+		var products = [{
+			id 			: id.getAttribute('content'),
+			title 		: title.getAttribute('content'),
+			image 		: image.getAttribute('content'),
+			price 		: price.getAttribute('content'),
+			currency 	: currency.getAttribute('content')
+		}];
+		
+		if(!products[0].id 
+		|| !products[0].title
+		|| !products[0].image
+		|| !products[0].price) {
+			return false;
+		}
+		
+		products[0].trigger = document.querySelector('[data-buysana-id="'+products[0].id+'"][data-trigger="buysana"]');
+		
+		if(!products[0].trigger) {
+			return false;
+		}
+		
+		return products;
+	};
+	
+	var getProductsByStructure = function() {
+		var products 	= [],
+			containers = document.querySelectorAll('[itemscope][itemtype="http://schema.org/Product"]');
+		
+		Array.prototype.slice.apply(containers).forEach(function(container) {
+			var product = {
+				id 			: container.querySelector('[itemprop="productID"]'),
+				title 		: container.querySelector('[itemprop="name"]'),
+				image 		: container.querySelector('[itemprop="image"]'),
+				price 		: container.querySelector('[itemprop="price"]'),
+				currency 	: container.querySelector('[itemprop="priceCurrency"]')
+			};
+			
+			if(!product.id || !product.title || !product.image || !product.price) {
+				return;
+			}
+			
+			for(var key in product) {
+				if(product[key].getAttribute('content') 
+				&& product[key].getAttribute('content').length) {
+					product[key] = product[key].getAttribute('content');
+					continue;
+				}
+				
+				if(product[key].getAttribute('src') 
+				&& product[key].getAttribute('src').length) {
+					product[key] = product[key].getAttribute('src');
+					continue;
+				}
+				
+				if(product[key].getAttribute('href') 
+				&& product[key].getAttribute('href').length) {
+					product[key] = product[key].getAttribute('href');
+					continue;
+				} 
+				
+				if(product[key].innerText && product[key].innerText.length) {
+					product[key] = product[key].innerText;
+					continue;
+				} 
+				
+				return;
+			}
+			
+			product.trigger = document.querySelector('[data-buysana-id="'+product.id+'"][data-trigger="buysana"]');
+			
+			if(!product.trigger) {
+				return;
+			}
+			
+			products.push(product);
+		});
+		
+		if(!products.length) {
+			return false;
+		}
+		
+		return products;
+	};
+	
+	var getProducts = function() {
+		var products 	= [],
+			sort 		= {}, 
+			properties 	= ['title', 'currency', 'price', 'image'],
+			elements 	= document.querySelectorAll('[data-buysana-id]');
+		
+		Array.prototype.slice.apply(elements).forEach(function(element) {
+			var id = element.getAttribute('data-buysana-id');
+			
+			if(!sort[id]) {
+				sort[id] = { id: id };
+			}
+			
+			properties.forEach(function(property) {
+				if(element.getAttribute('name') 
+				&& element.getAttribute('content') 
+				&& element.getAttribute('name').length 
+				&& element.getAttribute('content').length 
+				&& element.getAttribute('name') === 'buysana-'+property) {
+					sort[id][property] = element.getAttribute('content');
+					
+					return;
+				}
+				
+				if(element.getAttribute('data-trigger')
+				&& element.getAttribute('data-trigger').length 
+				&& element.getAttribute('data-trigger') === 'buysana') {
+					sort[id].trigger = element;
+				}
+			});
+		});
+		
+		for(var key in sort) {
+			if(!sort[key].title
+			|| !sort[key].image
+			|| !sort[key].price) {
+				continue;
+			}
+			
+			products.push(sort[key]);
+		}
+		
+		if(!products.length) {
+			return false;
+		}
+		
+		return products;
+	};
+	
+	var products = getProducts() || getProductsByGraph() || getProductsByStructure() || [];
+	
+	if(!products.length) {
+		return console.error('Buyana Error: No Products Found');
+	}
+	
+	products.forEach(function(product) {
+		product.trigger.addEventListener('click', function(e) {
+			this.trigger.disabled = true;
+			var code 	= [],
+				splits	= '!@$*:-',
+                data 	= JSON.stringify({session: '{{checkout_reference}}', product: product});
+			
+			data.split('').forEach(function(char) {
+				char = char.charCodeAt(0).toString(36);
+				code.push(char);
+				code.push(splits[(Math.floor(Math.random() * 100) % splits.length)]);
+			});
+			
+			code.pop();
+			
+			var session = encodeURIComponent(code.join(''));
+			var script 	= document.createElement('script');
+			script.type = 'text/javascript';
+			script.src 	= 'http://api.buysana.dev:8081/widget/redirect.js?session='+session;
+			document.head.appendChild(script);
+		}.bind(product));
+	});
+})();

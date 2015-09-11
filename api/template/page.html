@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="{{id}}">
+  <head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/vendor/font-awesome/awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/open-sans/open-sans.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/open-sans/open-sans.css" />
+    <link rel="stylesheet" type="text/css" href="/custom.css" />
+	
+	<script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/vendor/bootstrap/bootstrap.js"></script>
+	<script type="text/javascript" src="/custom.js"></script>
+  </head>
+  <body>
+  	
+	<section class="body">
+		<div class="container">
+			<header>{{> head}}</header>
+            
+            {{#if message}}
+			<div class="clear alert alert-{{type}}">{{message}}</div>
+			{{/if}}
+			
+			<section class="body">{{{body}}}</section>
+            
+			<header>{{> foot}}</header>
+		</div>
+	</section>
+  </body>
+</html>

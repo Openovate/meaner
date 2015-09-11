@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html class="html-{{action}}">
+  <head>
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/vendor/font-awesome/awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/open-sans/open-sans.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/vendor/open-sans/open-sans.css" />
+	{{#if checkout_style}}
+	<link rel="stylesheet" type="text/css" href="{{checkout_style}}" />
+	{{/if}}
+	
+	<script type="text/javascript" src="/vendor/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/vendor/bootstrap/bootstrap.js"></script>
+  </head>
+  <body>
+  	<div class="container pad-vertical">
+    	{{#if message}}
+		<div class="clear alert alert-{{type}}">{{message}}</div>
+		{{/if}}
+		
+		{{{body}}}
+	</div>
+  </body>
+</html>
