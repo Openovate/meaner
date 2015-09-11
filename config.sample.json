@@ -2,7 +2,7 @@
 	"api": {
 		"server": {
 			"protocol": "http",
-			"host": "api.framework.dev",
+			"host": "api.meaner.dev",
 			"port": "1337"
 		},
 		"mail" : {
@@ -16,7 +16,7 @@
 			"host": "https://s3-ap-southeast-1.amazonaws.com",
 			"token": "AKIAJQOL4OEM3WZW7BSA",
 			"secret": "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",
-			"bucket": "framework-dev"
+			"bucket": "meaner-dev"
 		},
 		"database": {
 			"host": "127.0.0.1",
@@ -57,6 +57,14 @@
 				}
 			}
 		},
+		"scope": [
+			"public_product",
+			"public_profile",
+			"public_sso",
+			"personal_profile",
+			"personal_product",
+			"personal_address"
+		],
 		"routes": {
 			"developer": {
 				"/developer/create": {
@@ -173,7 +181,7 @@
 		}
 	},
 	"web": {
-		"server": "http://api.salaaap.com:1337",
+		"server": "http://api.meaner.com:1337",
 		"app_token": "986e7ce6bec660838491c1cd0a1f4ef6",
 		"app_secret": "ba0d2fc7aab09dfa3463943c0aaa8551",
 		"ga_tracker": "UA-66654644-1",
