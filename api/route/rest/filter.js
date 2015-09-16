@@ -1,4 +1,3 @@
-var syncopate	= require('syncopate');
 var hash		= require('eden-hash');
 var language	= require('eden-language')();
 var controller	= require('../../controller');
@@ -44,6 +43,9 @@ module.exports = {
 			this.request 	= request;
 			this.response 	= response;
 			this.controller	= controller;
+			this.model		= controller.model.bind(controller);
+			this.job		= controller.job.bind(controller);
+			this.queue		= controller.queue;
 			
 			//inject shortcuts
 			this.session 	= request.session;
@@ -61,7 +63,11 @@ module.exports = {
 			}
 			
 			//inject sync
-			this.then = syncopate().scope(this).then;
+			this.sync = function() {
+				var args = Array.prototype.slice.apply(arguments);
+				args.unshift(this);
+				return controller.sync.apply(controller, args);
+			};
 			
 			if(this.request.session.message) {
 				this.data.type 	= this.request.session.type || 'info';

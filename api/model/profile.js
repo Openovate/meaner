@@ -7,9 +7,6 @@ module.exports = {
 	-------------------------------*/
 	/* Properties
 	-------------------------------*/
-	controller	: require('../controller'),
-	database	: require('../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -18,7 +15,7 @@ module.exports = {
 	 * @return object
 	 */
 	create: function() {
-		return this.controller.model('profile/create');
+		return this.model('profile/create');
 	},
 	
 	/**
@@ -27,7 +24,7 @@ module.exports = {
 	 * @return object
 	 */
 	detail: function() {
-		return this.controller.model('profile/detail');
+		return this.model('profile/detail');
 	},
 	
 	/**
@@ -40,7 +37,7 @@ module.exports = {
 	linkFile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//insert
 		.then(function(next) {
@@ -69,7 +66,7 @@ module.exports = {
 	 * @return object
 	 */
 	list: function() {
-		return this.controller.model('profile/list');
+		return this.model('profile/list');
 	},
 	
 	/**
@@ -78,7 +75,16 @@ module.exports = {
 	 * @return object
 	 */
 	remove: function() {
-		return this.controller.model('profile/remove');
+		return this.model('profile/remove');
+	},
+	
+	/**
+	 * Factory for set
+	 *
+	 * @return object
+	 */
+	set: function() {
+		return this.model('profile/set');
 	},
 	
 	/**
@@ -92,7 +98,7 @@ module.exports = {
 		types		= types || [];
 		callback 	= callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//search for existing files
 		.then(function(next) {
@@ -131,7 +137,7 @@ module.exports = {
 		//insert file one by one
 		.thread('file-loop', function(rows, i, next) {
 			if(i < rows.length) {
-				model.unlinkFile({
+				this.model('profile').unlinkFile({
 					profile_id: id,
 					file_id: rows[i].file_id
 				}, next.thread.bind(this, 'file-remove', rows, i));
@@ -145,7 +151,7 @@ module.exports = {
 		//remove file
 		.thread('file-remove', function(rows, i, error, item, next) {
 			//ignore errors, just continue
-			model.controller.model('file').remove().process({
+			this.model('file').remove().process({
 				file_id: rows[i].file_id
 			}, next.thread.bind(this, 'iterate', rows, i));
 		})
@@ -172,7 +178,7 @@ module.exports = {
 	unlinkFile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//remove
 		.then(function(next) {
@@ -201,6 +207,6 @@ module.exports = {
 	 * @return object
 	 */
 	update: function() {
-		return this.controller.model('profile/update');
+		return this.model('profile/update');
 	}
 };

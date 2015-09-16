@@ -25,8 +25,10 @@ module.exports = {
 			return this.check();
 		}
 		
-		//get item	
-		this.then(function(next) {
+		this.sync()
+
+		//get item
+		.then(function(next) {
 			this.item = { 
 				app_id		: parseInt(this.params.id),
 				profile_id	: this.me.profile_id };
@@ -36,12 +38,10 @@ module.exports = {
 		
 		//check permissions
 		.then(function(next) {
-			this.controller
-				.model('app')
-				.permissions(
-					this.item.app_id, 
-					this.item.profile_id, 
-					next);
+			this.model('app').permissions(
+				this.item.app_id, 
+				this.item.profile_id, 
+				next);
 		})
 		
 		//get app
@@ -55,8 +55,7 @@ module.exports = {
 				return this.fail(this.FAIL_PERMISSIONS, '/app/list');
 			}
 			
-			this.controller
-				.model('app')
+			this.model('app')
 				.detail()
 				.process(this.item)
 				.getRow(next);
@@ -85,8 +84,10 @@ module.exports = {
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			//add app
 			this.item.app_id = parseInt(this.params.id);
 			
@@ -102,8 +103,7 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('app')
+			var errors = this.model('app')
 				.update()
 				.errors(this.item);
 		
@@ -112,7 +112,7 @@ module.exports = {
 				return this.fail(this.FAIL_VALIDATION, errors, this.item);
 			}
 			
-			this.controller.job('app-update')({
+			this.job('app-update')({
 				data: { item: this.item }
 			}, next);
 		})

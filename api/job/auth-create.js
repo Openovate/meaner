@@ -3,10 +3,9 @@ module.exports = function(job, done) {
 	// item 	- auth/profile/file item
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
 	var results		= {};
 	
-	controller.sync()
+	this.sync()
 	
 	//check existence of profile
 	.then(function(next) {

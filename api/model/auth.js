@@ -7,9 +7,6 @@ module.exports = {
 	-------------------------------*/
 	/* Properties
 	-------------------------------*/
-	controller	: require('../controller'),
-	database	: require('../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -18,7 +15,7 @@ module.exports = {
 	 * @return object
 	 */
 	create: function() {
-		return this.controller.model('auth/create');
+		return this.model('auth/create');
 	},
 	
 	/**
@@ -31,7 +28,7 @@ module.exports = {
 	exists: function(slug, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//get total
 		.then(function(next) {
@@ -57,7 +54,7 @@ module.exports = {
 	linkProfile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//insert
 		.then(function(next) {
@@ -86,7 +83,7 @@ module.exports = {
 	 * @return object
 	 */
 	remove: function() {
-		return this.controller.model('auth/remove');
+		return this.model('auth/remove');
 	},
 	
 	/**
@@ -99,7 +96,7 @@ module.exports = {
 	unlinkProfile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//remove
 		.then(function(next) {
@@ -128,6 +125,6 @@ module.exports = {
 	 * @return object
 	 */
 	update: function() {
-		return this.controller.model('auth/update');
+		return this.model('auth/update');
 	}
 };

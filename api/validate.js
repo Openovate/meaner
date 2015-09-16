@@ -9,13 +9,46 @@ module.exports = {
 	 * @return this
 	 */
 	isBool: function(string) {
-		if(typeof string === 'undefined') {
+		if(typeof string === 'undefined' || string === null) {
 			return false;
 		}
 		
-		string = ''+string;
+		string = string.toString();
 		
 		return string == '0' || string == '1';
+	},
+	
+	/**
+	 * Test date
+	 *
+	 * @param string
+	 * @return this
+	 */
+	isDate: function(string) {
+		if(typeof string === 'undefined' || string === null) {
+			return false;
+		}
+		
+		string = string.toString();
+		
+		return /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}/ig.test(string)
+	},
+	
+	/**
+	 * Test email
+	 *
+	 * @param string|number
+	 * @return this
+	 */
+	isEmail: function(string) {
+		if(typeof string === 'undefined' || string === null) {
+			return false;
+		}
+		
+		string = string.toString();
+		
+		return /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/ig
+		.test(string)
 	},
 	
 	/**
@@ -25,8 +58,7 @@ module.exports = {
 	 * @return this
 	 */
 	isEmpty: function(string) {
-		if(typeof string === 'undefined'
-		|| string === null) {
+		if(typeof string === 'undefined' || string === null) {
 			return true;
 		}
 		
@@ -42,7 +74,7 @@ module.exports = {
 	 * @return this
 	 */
 	isFloat: function(number) {
-		if(typeof number === 'undefined') {
+		if(typeof number === 'undefined' || number === null) {
 			return false;
 		}
 		
@@ -58,7 +90,7 @@ module.exports = {
 	 * @return this
 	 */
 	isInteger: function(number) {
-		if(typeof number === 'undefined') {
+		if(typeof number === 'undefined' || number === null) {
 			return false;
 		}
 		
@@ -74,7 +106,7 @@ module.exports = {
 	 * @return this
 	 */
 	isNumber: function(number) {
-		if(typeof number === 'undefined') {
+		if(typeof number === 'undefined' || number === null) {
 			return false;
 		}
 		
@@ -101,7 +133,7 @@ module.exports = {
 	 * @return this
 	 */
 	isSmall: function(number) {
-		if(typeof number === 'undefined') {
+		if(typeof number === 'undefined' || number === null) {
 			return false;
 		}
 		
@@ -136,7 +168,7 @@ module.exports = {
 				}
 				
 				prepared.push(value.toString());
-			});
+			}.bind(this));
 			
 			return prepared;
 		}

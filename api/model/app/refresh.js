@@ -13,9 +13,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -27,7 +24,7 @@ module.exports = {
 	errors: function(item, errors) {
 		errors = errors || {};
 		
-		if(!this.controller.validate().isInteger(item.app_id)) {
+		if(!this.validate().isInteger(item.app_id)) {
 			errors.app_id = this.INVALID_ID;
 		}
 		
@@ -51,7 +48,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item || {});
+		item = this.validate().prepare(item || {});
 		
 		//generate dates
 		var updated = time.toDate(new Date(), 'Y-m-d H:i:s');

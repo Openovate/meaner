@@ -14,8 +14,10 @@ module.exports = {
 	/* Constructor
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			this.item = { 
 				app_id		: parseInt(this.params.id),
 				profile_id	: this.me.profile_id };
@@ -26,8 +28,7 @@ module.exports = {
 		//validate
 		.then(function(next) {
 			//get errors
-			var errors = this.controller
-				.model('app')
+			var errors = this.model('app')
 				.remove()
 				.errors(this.item);
 			
@@ -42,12 +43,10 @@ module.exports = {
 		
 		//check permissions
 		.then(function(next) {
-			this.controller
-				.model('app')
-				.permissions(
-					this.item.app_id, 
-					this.item.profile_id, 
-					next);
+			this.model('app').permissions(
+				this.item.app_id, 
+				this.item.profile_id, 
+				next);
 		})
 		
 		//remove
@@ -61,7 +60,7 @@ module.exports = {
 				return this.fail(this.FAIL_PERMISSIONS, '/app/list');
 			}
 			
-			this.controller.job('app-remove')({
+			this.job('app-remove')({
 				data: { item: this.item }
 			}, next);
 		})

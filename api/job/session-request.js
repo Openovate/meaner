@@ -3,10 +3,9 @@ module.exports = function(job, done) {
 	// item 	- session item
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
 	var results		= {};
 	
-	controller.sync()
+	this.sync()
 	
 	//process the profile
 	.then(function(next) {

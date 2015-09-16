@@ -10,9 +10,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -25,9 +22,9 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
-		if(this.controller.validate().isEmpty(item.auth_id)) {
+		if(this.validate().isEmpty(item.auth_id)) {
 			errors.auth_id = this.INVALID_ID;
 		}
 		
@@ -51,7 +48,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		//remove the tokens associated with this user
 		var search = this.database

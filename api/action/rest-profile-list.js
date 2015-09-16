@@ -12,8 +12,10 @@ module.exports = {
 	/* Construct
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get data
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.public = true;
 			
 			next();
@@ -21,8 +23,7 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('profile')
+			var errors = this.model('profile')
 				.list()
 				.errors(this.item);
 		
@@ -35,8 +36,7 @@ module.exports = {
 		
 		//get total
 		.then(function(next) {
-			this._search = this.controller
-				.model('profile')
+			this._search = this.model('profile')
 				.list()
 				.process(this.item)
 				.getTotal(next);

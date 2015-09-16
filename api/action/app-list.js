@@ -12,10 +12,11 @@ module.exports = {
 	/* Contruct
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get rows
-		this.then(function(next) {
-			this.controller
-				.model('app')
+		.then(function(next) {
+			this.model('app')
 				.list()
 				.process()
 				.innerJoinOn(

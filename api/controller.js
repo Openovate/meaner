@@ -13,6 +13,7 @@ var language		= require('eden-language');
 var kue 			= require('kue');
 var syncopate		= require('syncopate'); 
 var string			= require('eden-string')(); 
+var hash			= require('eden-hash')(); 
 
 module.exports = {
 	/* Properties
@@ -135,8 +136,23 @@ module.exports = {
 	 * @return object
 	 */
 	model: function(name) {
-		var model = this.path('model');
-		return require(model + '/' + name);
+		var controller	= this;
+		var path 		= this.path('model');
+		var model 		= require(path + '/' + name);
+		
+		var sync = function() {
+			var args = Array.prototype.slice.apply(arguments);
+			args.unshift(this);
+			return controller.sync.apply(controller, args);
+		};
+		
+		return hash.merge({
+			controller	: this,
+			database	: this.database,
+			sync		: sync,
+			model		: this.model.bind(this),
+			validate	: this.validate.bind(this)
+		}, model);
 	},
 	
 	/**

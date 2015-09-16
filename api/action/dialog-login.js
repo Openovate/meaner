@@ -53,11 +53,12 @@ module.exports = {
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//validate
-		this.then(function(next) {
+		.then(function(next) {
 			//get errors
-			var errors = this.controller
-				.model('session')
+			var errors = this.model('session')
 				.login()
 				.errors(this.item);
 		
@@ -71,8 +72,7 @@ module.exports = {
 		
 		//login
 		.then(function(next) {
-			this.controller
-				.model('session')
+			this.model('session')
 				.login()
 				.process(this.item, next);
 		})

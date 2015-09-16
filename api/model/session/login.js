@@ -12,9 +12,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -27,13 +24,13 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
-		if(this.controller.validate().isEmpty(item.auth_slug)) {
+		if(this.validate().isEmpty(item.auth_slug)) {
 			errors.auth_slug = this.INVALID_EMPTY;
 		}
 		
-		if(this.controller.validate().isEmpty(item.auth_password)) {
+		if(this.validate().isEmpty(item.auth_password)) {
 			errors.auth_password = this.INVALID_EMPTY;
 		}
 		
@@ -57,7 +54,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var search = this.database
 			.search('auth')

@@ -14,9 +14,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -29,17 +26,17 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
-		if(this.controller.validate().isEmpty(item.client_id)) {
+		if(this.validate().isEmpty(item.client_id)) {
 			errors.client_id = this.INVALID_EMPTY;
 		}
 		
-		if(this.controller.validate().isEmpty(item.client_secret)) {
+		if(this.validate().isEmpty(item.client_secret)) {
 			errors.client_secret = this.INVALID_EMPTY;
 		}
 		
-		if(this.controller.validate().isEmpty(item.code)) {
+		if(this.validate().isEmpty(item.code)) {
 			errors.code = this.INVALID_EMPTY;
 		}
 		
@@ -63,7 +60,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var token 		= string.md5(string.uuid());
 		var secret 		= string.md5(string.uuid());
@@ -89,8 +86,7 @@ module.exports = {
 			}
 			
 			if(!model || model.session_status !== 'PENDING') {
-				callback(this.EXPIRED);
-				return;
+				return callback(this.EXPIRED);
 			}
 			
 			//okay it matches
@@ -104,8 +100,7 @@ module.exports = {
 			
 			model.save(function(error, model) {
 				if(error) {
-					callback(error.toString());
-					return;
+					return callback(error.toString());
 				}
 				
 				callback(error, {

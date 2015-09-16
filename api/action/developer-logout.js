@@ -18,8 +18,7 @@ module.exports = {
 		
 		this.item = { auth_id: this.me.auth_id };
 		
-		var errors = this.controller
-			.model('session')
+		var errors = this.model('session')
 			.logout()
 			.errors(this.item);
 		
@@ -27,8 +26,7 @@ module.exports = {
 			return this.fail(errors.auth_id, '/app/list');
 		}
 		
-		this.controller
-			.model('session')
+		this.model('session')
 			.logout()
 			.process(this.item);
 		

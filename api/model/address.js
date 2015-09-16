@@ -7,9 +7,6 @@ module.exports = {
 	-------------------------------*/
 	/* Properties
 	-------------------------------*/
-	controller	: require('../controller'),
-	database	: require('../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -18,7 +15,7 @@ module.exports = {
 	 * @return object
 	 */
 	create: function() {
-		return this.controller.model('address/create');
+		return this.model('address/create');
 	},
 	
 	/**
@@ -27,7 +24,7 @@ module.exports = {
 	 * @return object
 	 */
 	detail: function() {
-		return this.controller.model('address/detail');
+		return this.model('address/detail');
 	},
 	
 	/**
@@ -36,7 +33,7 @@ module.exports = {
 	 * @return object
 	 */
 	list: function() {
-		return this.controller.model('address/list');
+		return this.model('address/list');
 	},
 	
 	/**
@@ -51,7 +48,7 @@ module.exports = {
 	permissions: function(address, profile, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//get row
 		.then(function(next) {
@@ -85,7 +82,7 @@ module.exports = {
 	 * @return object
 	 */
 	remove: function() {
-		return this.controller.model('address/remove');
+		return this.model('address/remove');
 	},
 	
 	/**
@@ -94,6 +91,6 @@ module.exports = {
 	 * @return object
 	 */
 	update: function() {
-		return this.controller.model('address/update');
+		return this.model('address/update');
 	}
 };

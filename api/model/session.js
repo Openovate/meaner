@@ -7,9 +7,6 @@ module.exports = {
 	-------------------------------*/
 	/* Properties
 	-------------------------------*/
-	controller	: require('../controller'),
-	database	: require('../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -18,7 +15,7 @@ module.exports = {
 	 * @return object
 	 */
 	access: function() {
-		return this.controller.model('session/access');
+		return this.model('session/access');
 	},
 	
 	/**
@@ -32,7 +29,7 @@ module.exports = {
 	getProfileByToken: function(token, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		.then(function(next) {
 			this.database
@@ -66,7 +63,7 @@ module.exports = {
 	 * @return object
 	 */
 	login: function() {
-		return this.controller.model('session/login');
+		return this.model('session/login');
 	},
 	
 	/**
@@ -75,7 +72,7 @@ module.exports = {
 	 * @return object
 	 */
 	logout: function() {
-		return this.controller.model('session/logout');
+		return this.model('session/logout');
 	},
 	
 	/**
@@ -84,6 +81,6 @@ module.exports = {
 	 * @return object
 	 */
 	request: function() {
-		return this.controller.model('session/request');
+		return this.model('session/request');
 	}
 };

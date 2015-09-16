@@ -151,6 +151,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `profile_linkedin` varchar(255) DEFAULT NULL COMMENT 'LinkedIn website link',
   `profile_twitter` varchar(255) DEFAULT NULL COMMENT 'Twitter website link',
   `profile_google` varchar(255) DEFAULT NULL COMMENT 'Google website link',
+  `profile_reference` varchar(255) DEFAULT NULL COMMENT 'Reference usually related to app',
   `profile_active` int(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Do not delete rows',
   `profile_type` varchar(255) DEFAULT NULL COMMENT 'General usage type',
   `profile_flag` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'General usage flag',
@@ -265,7 +266,7 @@ ALTER TABLE `file`
 -- Indexes for table `profile`
 --
 ALTER TABLE `profile`
- ADD PRIMARY KEY (`profile_id`), ADD KEY `profile_name` (`profile_name`), ADD KEY `profile_email` (`profile_email`), ADD KEY `profile_company` (`profile_company`), ADD KEY `profile_gender` (`profile_gender`), ADD KEY `profile_birth` (`profile_birth`), ADD KEY `profile_active` (`profile_active`), ADD KEY `profile_type` (`profile_type`), ADD KEY `profile_flag` (`profile_flag`), ADD KEY `profile_created` (`profile_created`), ADD KEY `profile_updated` (`profile_updated`);
+ ADD PRIMARY KEY (`profile_id`), ADD KEY `profile_name` (`profile_name`), ADD KEY `profile_email` (`profile_email`), ADD KEY `profile_company` (`profile_company`), ADD KEY `profile_gender` (`profile_gender`), ADD KEY `profile_birth` (`profile_birth`), ADD KEY `profile_reference` (`profile_reference`), ADD KEY `profile_active` (`profile_active`), ADD KEY `profile_type` (`profile_type`), ADD KEY `profile_flag` (`profile_flag`), ADD KEY `profile_created` (`profile_created`), ADD KEY `profile_updated` (`profile_updated`);
 
 --
 -- Indexes for table `profile_address`

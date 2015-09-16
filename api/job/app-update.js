@@ -3,9 +3,9 @@ module.exports = function(job, done) {
 	// item 	- app item
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
+	var results		= {};
 	
-	controller.sync()
+	this.sync()
 	
 	// update
 	.then(function(next) {
@@ -20,6 +20,8 @@ module.exports = function(job, done) {
 			return done(error.toString());
 		}
 		
-		done(null, item);
+		results.app = model.get();
+		
+		done(null, results);
 	});
 };

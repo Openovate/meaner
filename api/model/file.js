@@ -17,7 +17,7 @@ module.exports = {
 	 * @return object
 	 */
 	create: function() {
-		return this.controller.model('file/create');
+		return this.model('file/create');
 	},
 	
 	/**
@@ -26,7 +26,7 @@ module.exports = {
 	 * @return object
 	 */
 	detail: function() {
-		return this.controller.model('file/detail');
+		return this.model('file/detail');
 	},
 	
 	/**
@@ -35,7 +35,7 @@ module.exports = {
 	 * @return object
 	 */
 	list: function() {
-		return this.controller.model('file/list');
+		return this.model('file/list');
 	},
 	
 	/**
@@ -44,6 +44,6 @@ module.exports = {
 	 * @return object
 	 */
 	remove: function() {
-		return this.controller.model('file/remove');
+		return this.model('file/remove');
 	}
 };

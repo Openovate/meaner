@@ -109,8 +109,10 @@ module.exports = {
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.app_id = this.request.source.app_id;
 			this.item.auth_id = this.request.session.me.auth_id;
 			
@@ -129,8 +131,7 @@ module.exports = {
 		
 		//validation
 		.then(function(next) {
-			var errors = this.controller
-				.model('session')
+			var errors = this.model('session')
 				.request()
 				.errors(this.item);
 		
@@ -143,7 +144,7 @@ module.exports = {
 		
 		//process
 		.then(function(next) {
-			this.controller.job('session-request')({
+			this.job('session-request')({
 				data: { item: this.item }
 			}, next);
 		})

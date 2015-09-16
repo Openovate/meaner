@@ -7,9 +7,6 @@ module.exports = {
 	-------------------------------*/
 	/* Properties
 	-------------------------------*/
-	controller	: require('../controller'),
-	database	: require('../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -18,7 +15,7 @@ module.exports = {
 	 * @return object
 	 */
 	create: function() {
-		return this.controller.model('app/create');
+		return this.model('app/create');
 	},
 	
 	/**
@@ -32,7 +29,7 @@ module.exports = {
 	getProfileByToken: function(token, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//get row
 		.then(function(next) {
@@ -62,7 +59,7 @@ module.exports = {
 	 * @return object
 	 */
 	detail: function() {
-		return this.controller.model('app/detail');
+		return this.model('app/detail');
 	},
 	
 	/**
@@ -75,7 +72,7 @@ module.exports = {
 	linkProfile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//insert
 		.then(function(next) {
@@ -105,7 +102,7 @@ module.exports = {
 	 * @return object
 	 */
 	list: function() {
-		return this.controller.model('app/list');
+		return this.model('app/list');
 	},
 	
 	/**
@@ -119,7 +116,7 @@ module.exports = {
 	permissions: function(app, profile, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//get row
 		.then(function(next) {
@@ -153,7 +150,7 @@ module.exports = {
 	 * @return object
 	 */
 	refresh: function() {
-		return this.controller.model('app/refresh');
+		return this.model('app/refresh');
 	},
 	
 	/**
@@ -162,7 +159,7 @@ module.exports = {
 	 * @return object
 	 */
 	remove: function() {
-		return this.controller.model('app/remove');
+		return this.model('app/remove');
 	},
 	
 	/**
@@ -175,7 +172,7 @@ module.exports = {
 	unlinkProfile: function(item, callback) {
 		callback = callback || function() {};
 		
-		this.controller.sync(this)
+		this.sync()
 		
 		//remove
 		.then(function(next) {
@@ -205,6 +202,6 @@ module.exports = {
 	 * @return object
 	 */
 	update: function() {
-		return this.controller.model('app/update');
+		return this.model('app/update');
 	}
 };

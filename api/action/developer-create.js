@@ -35,8 +35,10 @@ module.exports = {
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.auth_slug 		= this.item.profile_email;
 			this.item.auth_permissions 	= this.controller.config('scope').join(',');
 			this.item.profile_type		= 'buyer';
@@ -52,13 +54,11 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('auth')
+			var errors = this.model('auth')
 				.create()
 				.errors(this.item);
 			
-			errors = this.controller
-				.model('profile')
+			errors = this.model('profile')
 				.create()
 				.errors(this.item, errors);
 			
@@ -73,7 +73,7 @@ module.exports = {
 		
 		//process
 		.then(function(next) {
-			this.controller.job('auth-create')({
+			this.job('auth-create')({
 				data: { item: this.item }
 			}, next);
 		})

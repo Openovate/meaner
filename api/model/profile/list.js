@@ -9,9 +9,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -41,7 +38,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item || {});
+		item = this.validate().prepare(item || {});
 	
 		var filter 	= item.filter 	|| {},
 			range 	= item.range 	|| 50,
@@ -52,12 +49,6 @@ module.exports = {
 			
 		var search = this.database
 			.search('profile')
-			.innerJoinOn(
-				'profile_file', 
-				'profile_file_profile = profile_id')
-			.innerJoinOn(
-				'file', 
-				'profile_file_file = file_id AND file_type = \'main_profile\'')
 			.setStart(parseInt(start) || 0)
 			.setRange(parseInt(range) || 0);
 			
@@ -66,8 +57,7 @@ module.exports = {
 				'profile_id', 
 				'profile_name',
 				'profile_type',
-				'profile_created',
-				'file_link AS profile_image')
+				'profile_created')
 		}
 		
 		if(typeof filter.profile_active === 'undefined') {

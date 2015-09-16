@@ -31,12 +31,14 @@ module.exports  = {
     -------------------------------*/
     /**
      * When the form is submitted
-	 *
+	 * 
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//set the body
-		this.then(function(next) {
+		.then(function(next) {
 			//add profile_id
 			this.item.profile_id = this.me.profile_id;
 			
@@ -54,8 +56,7 @@ module.exports  = {
 		//validate
 		.then(function(next) {
 			//get errors
-			var errors = this.controller
-				.model('app')
+			var errors = this.model('app')
 				.create()
 				.errors(this.item);
 			
@@ -69,7 +70,7 @@ module.exports  = {
 		
 		// process
 		.then(function(next) {
-			this.controller.job('app-create')({
+			this.job('app-create')({
 				data: {
 					item		: this.item,
 					profile_id	: this.item.profile_id

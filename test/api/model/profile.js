@@ -27,6 +27,10 @@ module.exports = function(controller, config) {
 			require('./profile/update')(fixture);
 		});
 		
+		describe('Set', function () {
+			require('./profile/set')(fixture);
+		});
+		
 		describe('Remove', function () {
 			require('./profile/remove')(fixture);
 		});

@@ -9,9 +9,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -40,7 +37,7 @@ module.exports = {
 			return callback(this.INVALID_PARAMETERS);
 		}
 		
-		item = this.controller.validate().prepare(item || {});
+		item = this.validate().prepare(item || {});
 	
 		var filter 	= item.filter 	|| {},
 			range 	= item.range 	|| 50,

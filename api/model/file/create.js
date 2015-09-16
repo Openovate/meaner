@@ -24,9 +24,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -39,18 +36,18 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		//REQUIRED
 		
 		// file_data			Required
 		// OR
 		// file_link			Required
-		if(this.controller.validate().isEmpty(item.file_data)
-		&& this.controller.validate().isEmpty(item.file_link)) {
+		if(this.validate().isEmpty(item.file_data)
+		&& this.validate().isEmpty(item.file_link)) {
 			errors.file_data = this.INVALID_EMPTY;
 			errors.file_link = this.INVALID_EMPTY;
-		} else if(item.imageOnly && !this.controller.validate().isEmpty(item.file_data)) {
+		} else if(item.imageOnly && !this.validate().isEmpty(item.file_data)) {
 			var data = decodeURIComponent(item.file_data);
 		
 			//data:mime;base64,data
@@ -62,7 +59,7 @@ module.exports = {
 			if(mime.indexOf('image/') !== 0) {
 				errors.file_data = this.IMAGE_ONLY;
 			}
-		} else if(item.imageOnly && !this.controller.validate().isEmpty(item.file_link)) {
+		} else if(item.imageOnly && !this.validate().isEmpty(item.file_link)) {
 			var ext = item.file_link.split('.').pop();
 		
 			var mime = this.types[ext] || '';
@@ -75,8 +72,8 @@ module.exports = {
 		//OPTIONAL
 		
 		// file_flag
-		if(this.controller.validate().isSet(item.file_flag) 
-		&& !this.controller.validate().isSmall(item.file_flag)) {
+		if(this.validate().isSet(item.file_flag) 
+		&& !this.validate().isSmall(item.file_flag)) {
 			errors.file_flag = this.INVALID_SMALL;
 		}
 		
@@ -100,7 +97,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var config = this.controller.config('s3');
 		
@@ -108,8 +105,7 @@ module.exports = {
 			//upload
 			this.upload(config, item.file_data, function(error, meta) {
 				if(error) {
-					callback(error);
-					return;
+					return callback(error);
 				}
 				
 				item.file_link = [
@@ -124,6 +120,7 @@ module.exports = {
 				
 				this.save(item, callback);
 			}.bind(this));
+			
 			return;
 		}
 		
@@ -151,17 +148,17 @@ module.exports = {
 			.setFileUpdated(updated);
 		
 		// file_path
-		if(this.controller.validate().isSet(item.file_path)) {
+		if(this.validate().isSet(item.file_path)) {
 			model.setFilePath(item.file_path);
 		}
 		
 		// file_flag
-		if(this.controller.validate().isSmall(item.file_flag)) {
+		if(this.validate().isSmall(item.file_flag)) {
 			model.setFileFlag(item.file_flag);
 		}
 		
 		// file_type
-		if(this.controller.validate().isSet(item.file_type)) {
+		if(this.validate().isSet(item.file_type)) {
 			model.setFileType(item.file_type);
 		}
 		
@@ -227,8 +224,7 @@ module.exports = {
 			}
 			
 			if(response instanceof Error) {
-				callback(response.toString());
-				return;
+				return callback(response.toString());
 			}
 			
 			callback(null, { name: name, extension: ext, mime: mime });

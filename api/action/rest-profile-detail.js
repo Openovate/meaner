@@ -12,8 +12,10 @@ module.exports = {
 	/* Construct
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get data
-		this.then(function(next) {
+		.then(function(next) {
 			this.item = { profile_id: this.request.params.id || this.request.source.profile_id };
 		
 			if(parseInt(this.item.profile_id) !== parseInt(this.source.profile_id)) {
@@ -25,8 +27,7 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('profile')
+			var errors = this.model('profile')
 				.detail()
 				.errors(this.item);
 			
@@ -39,8 +40,7 @@ module.exports = {
 		
 		//process
 		.then(function(next) {
-			this.controller
-				.model('profile')
+			this.model('profile')
 				.detail()
 				.process(this.item)
 				.getRow(next);

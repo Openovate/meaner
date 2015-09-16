@@ -16,8 +16,10 @@ module.exports = {
 	/* Constructor
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.app_id = parseInt(this.params.id);
 			
 			//add profile_id
@@ -28,8 +30,7 @@ module.exports = {
 		
 		//get app
 		.then(function(next) {
-			this.controller
-				.model('app')
+			this.model('app')
 				.detail()
 				.process(this.item)
 				.innerJoinOn(
@@ -54,7 +55,7 @@ module.exports = {
 				return this.fail(this.FAIL_PERMISSIONS, '/app/list');
 			}
 			
-			this.controller.job('app-refresh')({
+			this.job('app-refresh')({
 				data: { item: this.item }
 			}, next);
 		})

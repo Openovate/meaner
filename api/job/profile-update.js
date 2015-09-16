@@ -3,38 +3,43 @@ module.exports = function(job, done) {
 	// item 	- profile item
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
+	var results		= { image: [] };
+	
+	this.sync()
 	
 	//update product
-	controller.sync(function(next) {
-		controller.model('profile').update().process(item, next); 
+	.then(function(next) {
+		this.model('profile')
+			.update()
+			.process(item, next); 
 	})
 	
 	//file choice
-	.then(function(error) {
+	.then(function(error, model, meta, next) {
 		if(error) {
 			return done(error);
 		}
 		
-		var next = Array.prototype.slice.apply(arguments).pop();
+		results.profile = model.get();
 		
 		//if no images, return
 		if(!item.images || !item.images.length) {
 			return done();
 		}
 			
-		controller.model('profile').unlinkAllFiles(
+		this.model('profile').unlinkAllFiles(
 			item.profile_id, 
 			['main_profile', 'profile_image'], 
-		function() {
-			next.thread('file-loop', 0);
-		});
+			next);
+	})
+	
+	//initiate loop
+	.then(function(error, next) {
+		next.thread('file-loop', 0);
 	})
 	
 	//add the image one at a time
-	.thread('file-loop', function(i) {
-		var next = Array.prototype.slice.apply(arguments).pop();
-		
+	.thread('file-loop', function(i, next) {
 		if(i < item.images.length) {
 			var file = item.images[i];
 			
@@ -47,29 +52,49 @@ module.exports = function(job, done) {
 			//1. Validate
 			file.imageOnly = true;
 			
-			var errors = controller.model('file').create().errors(file);
+			var errors = this.model('file')
+				.create()
+				.errors(file);
 			
 			if(Object.keys(errors).length) {
 				return next.thread('file-loop', i + 1);
 			}
 			
 			// 2. Process
-			controller.model('file').create().process(file, function(error, file) {
-				if(error) {
-					return next.thread('file-loop', i + 1);
-				}
-				
-				controller.model('profile').linkFile({
-					file_id		: file.file_id,
-					product_id	: item.profile_id
-				}, function(error) {
-					next.thread('file-loop', i + 1);
-				});	
-			});
+			this.model('file')
+				.create()
+				.process(file, next.thread.bind(
+					this, 
+					'link-file',
+					i));
 			
 			return;
 		}
 		
+		next();
+	})
+	
+	//link file
+	.thread('link-file', function(i, error, model) {
+		if(error) {
+			return next.thread('file-loop', i + 1);
+		}
+		
+		results.images.push(model.get())
+		
+		this.model('profile').linkFile({
+			file_id		: model.file_id,
+			product_id	: item.profile_id
+		}, next.thread.bind(this, 'iterate', i));	
+	})
+	
+	//iterate
+	.thread('iterate', function(i, error, row, next) {
+		next.thread('file-loop', i + 1);
+	})
+	
+	//end
+	.then(function(next) {
 		done(null, item);
 	});
 };

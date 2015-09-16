@@ -3,9 +3,8 @@ module.exports = function(job, done) {
 	// item 	- app item
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
 	
-	controller.sync()
+	this.sync()
 	
 	// remove
 	.then(function(next) {

@@ -21,9 +21,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -36,40 +33,38 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		//REQUIRED
 		
 		// profile_id			Required
-		if(!this.controller.validate().isInteger(item.profile_id)) {
+		if(!this.validate().isInteger(item.profile_id)) {
 			errors.profile_id = this.INVALID_ID;
 		}
 		
 		// profile_name			Required
-		if(this.controller.validate().isSet(item.profile_name) 
-		&& this.controller.validate().isEmpty(item.profile_name)) {
+		if(this.validate().isSet(item.profile_name) 
+		&& this.validate().isEmpty(item.profile_name)) {
 			errors.profile_name = this.INVALID_SET;
 		}
 		
 		//OPTIONAL
 		
 		//profile_email	
-		if(this.controller.validate().isSet(item.profile_email)
-		&& !/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/ig
-		.test(item.profile_email)) {
+		if(this.validate().isSet(item.profile_email)
+		&& !this.validate().isEmail(item.profile_email)) {
 			errors.profile_email = this.INVALID_EMAIL;
 		}
 		
 		//profile_birth
-		if(this.controller.validate().isSet(item.profile_birth)
-		&& !/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}/ig
-		.test(item.profile_birth)) {
+		if(this.validate().isSet(item.profile_birth)
+		&& !this.validate().isDate(item.profile_birth)) {
 			errors.profile_birth = this.INVALID_DATE;
 		}
 		
 		// profile_flag
-		if(this.controller.validate().isSet(item.profile_flag) 
-		&& !this.controller.validate().isSmall(item.profile_flag)) {
+		if(this.validate().isSet(item.profile_flag) 
+		&& !this.validate().isSmall(item.profile_flag)) {
 			errors.profile_flag = this.INVALID_SMALL;
 		}
 		
@@ -94,7 +89,7 @@ module.exports = {
 		}
 		
         //prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		//generate dates
 		var updated = time.toDate(new Date(), 'Y-m-d H:i:s');
@@ -107,73 +102,78 @@ module.exports = {
 			.setProfileUpdated(updated);
 		
 		// profile_name
-		if(!this.controller.validate().isEmpty(item.profile_name)) {
+		if(!this.validate().isEmpty(item.profile_name)) {
 			model.setProfileName(item.profile_name);
 		}
 		
-		// profile_flag
-		if(this.controller.validate().isSmall(item.profile_flag)) {
-			model.setProfileFlag(item.profile_flag);
-		}
-		
-		// profile_type
-		if(this.controller.validate().isSet(item.profile_type)) {
-			model.setProfileType(item.profile_type);
-		}
-		
 		// profile_email
-		if(this.controller.validate().isSet(item.profile_email)) {
+		if(this.validate().isEmail(item.profile_email)) {
 			model.setProfileEmail(item.profile_email);
 		}
 		
 		// profile_phone
-		if(this.controller.validate().isSet(item.profile_phone)) {
+		if(this.validate().isSet(item.profile_phone)) {
 			model.setProfilePhone(item.profile_phone);
 		}
 		
 		// profile_company		
-		if(this.controller.validate().isSet(item.profile_company)) {
+		if(this.validate().isSet(item.profile_company)) {
 			model.setProfileCompany(item.profile_company);
 		}
 		
 		// profile_job			
-		if(this.controller.validate().isSet(item.profile_job)) {
+		if(this.validate().isSet(item.profile_job)) {
 			model.setProfileJob(item.profile_job);
 		}
 		
 		// profile_gender		
-		if(this.controller.validate().isSet(item.profile_gender)) {
+		if(this.validate().isSet(item.profile_gender)) {
 			model.setProfileGender(item.profile_gender);
 		}
 		
 		// profile_birth		
-		if(this.controller.validate().isSet(item.profile_birth)) {
+		if(this.validate().isSet(item.profile_birth)) {
 			model.setProfileBirth(item.profile_birth);
 		}
 
 		// profile_website		
-		if(this.controller.validate().isSet(item.profile_website)) {
+		if(this.validate().isSet(item.profile_website)) {
 			model.setProfileBirth(item.profile_website);
 		}
 
 		// profile_facebook		
-		if(this.controller.validate().isSet(item.profile_facebook)) {
+		if(this.validate().isSet(item.profile_facebook)) {
 			model.setProfileBirth(item.profile_facebook);
 		}
 
 		// profile_linkedin		
-		if(this.controller.validate().isSet(item.profile_linkedin)) {
+		if(this.validate().isSet(item.profile_linkedin)) {
 			model.setProfileLinkedin(item.profile_linkedin);
 		}
 
 		// profile_twitter		
-		if(this.controller.validate().isSet(item.profile_twitter)) {
+		if(this.validate().isSet(item.profile_twitter)) {
 			model.setProfileTwitter(item.profile_twitter);
 		}
 
 		// profile_google		
-		if(this.controller.validate().isSet(item.profile_google)) {
+		if(this.validate().isSet(item.profile_google)) {
 			model.setProfileGoogle(item.profile_google);
+		}
+		
+		// profile_reference
+		if(this.validate().isSet(item.profile_reference)) {
+			model.setProfileReference(item.profile_reference);
+		}
+		
+		// profile_type
+		if(this.validate().isSet(item.profile_type)) {
+			model.setProfileType(item.profile_type);
+		}
+		
+		// profile_flag
+		if(this.validate().isSmall(item.profile_flag)) {
+			model.setProfileFlag(item.profile_flag);
 		}
 		
 		//what's left ?

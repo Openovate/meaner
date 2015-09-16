@@ -4,10 +4,9 @@ module.exports = function(job, done) {
 	// profile_id
 	var data		= job.data;
 	var item 		= data.item;
-	var controller	= job.controller || this;
 	var results		= {};
 	
-	controller.sync()
+	this.sync()
 	
 	// create app
 	.then(function(next) {

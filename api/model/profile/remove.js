@@ -10,9 +10,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -25,10 +22,10 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		// profile_id			Required
-		if(!this.controller.validate().isInteger(item.profile_id)) {
+		if(!this.validate().isInteger(item.profile_id)) {
 			errors.profile_id = this.INVALID_ID;
 		}
 		
@@ -52,7 +49,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var model = this.database
 			.model()

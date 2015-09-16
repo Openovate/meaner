@@ -13,9 +13,6 @@ module.exports = {
 	
 	/* Properties
 	-------------------------------*/
-	controller	: require('../../controller'),
-	database	: require('../../controller').database,
-	
 	/* Methods
 	-------------------------------*/
 	/**
@@ -28,13 +25,13 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
-		if(this.controller.validate().isEmpty(item.app_id)) {
+		if(this.validate().isEmpty(item.app_id)) {
 			errors.app_id = this.INVALID_ID;
 		}
 		
-		if(this.controller.validate().isEmpty(item.auth_id)) {
+		if(this.validate().isEmpty(item.auth_id)) {
 			errors.auth_id = this.INVALID_ID;
 		}
 		
@@ -58,7 +55,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var token 		= string.md5(string.uuid());
 		var secret 		= string.md5(string.uuid());
@@ -101,8 +98,7 @@ module.exports = {
 			//grant access from data.auth and response.app 
 			model.save('session', function(error, model) {
 				if(error) {
-					callback(error.toString());
-					return;
+					return callback(error.toString());
 				}
 				
 				model

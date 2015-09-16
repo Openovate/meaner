@@ -31,8 +31,7 @@ module.exports = {
 			item.session_token = this.query.session_token;
 		}
 		
-		var errors = this.controller
-			.model('session')
+		var errors = this.model('session')
 			.logout()
 			.errors(item);
 		
@@ -40,7 +39,7 @@ module.exports = {
 			return this.redirect({ error: 'user_invalid' });
 		}
 		
-		this.controller.model('session').logout().process(item, function(error) {
+		this.model('session').logout().process(item, function(error) {
 			this.redirect({ success: 1 });	
 		}.bind(this));
 		

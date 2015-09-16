@@ -65,8 +65,10 @@ module.exports = {
 	 * @return void
 	 */
 	check: function() {
+		this.sync()
+
 		//get the item
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.auth_id 	= this.me.auth_id;
 			this.item.profile_id = this.me.profile_id;
 			
@@ -75,13 +77,11 @@ module.exports = {
 		
 		//validate 
 		.then(function(next) {
-			var errors = this.controller
-				.model('auth')
+			var errors = this.model('auth')
 				.update()
 				.errors(this.item);
 			
-			errors = this.controller
-				.model('profile')
+			errors = this.model('profile')
 				.update()
 				.errors(this.item, errors);
 			
@@ -95,9 +95,7 @@ module.exports = {
 		
 		//validate exists
 		.then(function(next) {
-			this.controller
-				.model('auth')
-				.exists(this.item.profile_email, next);
+			this.model('auth').exists(this.item.profile_email, next);
 		})
 		
 		//process
@@ -111,7 +109,7 @@ module.exports = {
 				return this.fail(this.FAIL_NOT_ME);	
 			}
 			
-			this.controller.job('auth-update')({
+			this.job('auth-update')({
 				data: { item: this.item }
 			}, next);
 		})

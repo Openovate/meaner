@@ -25,9 +25,9 @@ module.exports = {
 		errors = errors || {};
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
-		if(!this.controller.validate().isInteger(item.profile_id)) {
+		if(!this.validate().isInteger(item.profile_id)) {
 			errors.profile_id = this.INVALID_ID;
 		}
 		
@@ -51,7 +51,7 @@ module.exports = {
 		}
 		
 		//prepare
-		item = this.controller.validate().prepare(item);
+		item = this.validate().prepare(item);
 		
 		var search = this.database
 			.search('profile')

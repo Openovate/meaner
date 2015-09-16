@@ -12,8 +12,10 @@ module.exports = {
 	/* Construct
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get the data
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.client_id 		= this.source.access_token;
 			this.item.client_secret 	= this.source.access_secret;
 			
@@ -22,8 +24,7 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('session')
+			var errors = this.model('session')
 				.access()
 				.errors(this.item);
 		
@@ -36,7 +37,7 @@ module.exports = {
 		
 		//process
 		.then(function(next) {
-			this.controller.job('session-access')({
+			this.job('session-access')({
 				data: { item: this.item }
 			}, next);
 		})

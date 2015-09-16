@@ -13,8 +13,10 @@ module.exports = {
 	/* Construct
 	-------------------------------*/
 	constructor: function() {
+		this.sync()
+
 		//get the data
-		this.then(function(next) {
+		.then(function(next) {
 			this.item.profile_id = this.source.profile_id;
 		
 			//they cannot change their profile type
@@ -27,8 +29,7 @@ module.exports = {
 		
 		//validate
 		.then(function(next) {
-			var errors = this.controller
-				.model('profile')
+			var errors = this.model('profile')
 				.update()
 				.errors(this.item);
 			
