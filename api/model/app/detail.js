@@ -44,7 +44,8 @@ module.exports = {
 		
 		//prevent uncatchable error
 		if(Object.keys(this.errors(item)).length) {
-			return callback(this.INVALID_PARAMETERS);
+			callback(this.INVALID_PARAMETERS);
+			return null;
 		}
 		
 		//prepare
